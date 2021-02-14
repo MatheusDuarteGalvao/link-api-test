@@ -1,7 +1,7 @@
-import axios from 'axios';
+const axios = require('axios');
 
 const pipedrive = axios.create({
   baseURL: 'https://api.pipedrive.com/v1',
 });
 
-export default pipedrive;
+module.exports = pipedrive;

@@ -1,4 +1,4 @@
-import axios from 'axios';
+const axios = require('axios');
 
 const bling = axios.create({
   baseURL: 'bling.com.br/Api/v2',
