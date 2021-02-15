@@ -8,6 +8,5 @@ routes.get('/', (req, res) => {
 });
 
 routes.get('/opportunities', OpportunityController.index);
-routes.get('/opportunities/daily/', OpportunityController.store);
 
 module.exports = routes;

@@ -2,14 +2,14 @@ const { Schema, model } = require('mongoose');
 
 const OppotunitySchema = new Schema(
   {
-    id: Number,
-    title: String,
+    numero: Number,
+    idPedido: Number,
     value: Number,
-    status: String,
+    orgName: String,
   },
   {
     timestamps: true,
   }
 );
 
-export default model('Opportunity', OppotunitySchema);
+module.exports = model('Opportunity', OppotunitySchema);
