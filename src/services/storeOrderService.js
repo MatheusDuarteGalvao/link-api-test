@@ -30,7 +30,7 @@ module.exports = {
                     { name: 'codigo', text: 1 },
                     { name: 'descricao', text: 'deal' },
                     { name: 'qtde', text: 1 },
-                    { name: 'vlr_unit', text: opportunity.value || 0 },
+                    { name: 'vlr_unit', text: opportunity.value },
                   ],
                 },
               ],
@@ -40,7 +40,7 @@ module.exports = {
               children: [
                 {
                   name: 'parcela',
-                  children: [{ name: 'vlr', text: opportunity.value || 0 }],
+                  children: [{ name: 'vlr', text: opportunity.value }],
                 },
               ],
             },
