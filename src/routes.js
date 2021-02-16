@@ -4,7 +4,7 @@ const OpportunityController = require('./controllers/OpportunityController');
 const routes = Router();
 
 routes.get('/', (req, res) => {
-  return res.send('Test api running');
+  return res.json({ message: 'Test api running' });
 });
 
 routes.get('/opportunities', OpportunityController.index);

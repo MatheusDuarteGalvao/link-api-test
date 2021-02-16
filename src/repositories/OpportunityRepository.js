@@ -5,14 +5,14 @@ module.exports = {
     const ordersStore = await orders.map(async (order) => {
       const { numero, idPedido, value, orgName } = order;
 
-      const orderStore = await order.create({
+      const opportunity = await Opportunity.create({
         numero,
         idPedido,
         value,
         orgName,
       });
 
-      return orderStore;
+      return opportunity;
     });
     return ordersStore;
   },

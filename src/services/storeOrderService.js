@@ -1,46 +1,70 @@
 const { generate } = require('gerador-validador-cpf');
-const { js2xmlparser } = require('js2xmlparser');
+const jsontoxml = require('jsontoxml');
 const bling = require('../helpers/bling');
 
 module.exports = {
   async store(opportunities) {
     const opportunitiesStore = opportunities.map(async (opportunity) => {
-      const xmlJson = {
-        cliente: {
-          nome: opportunity.org_id.name,
-          cpf_cnpj: generate(),
-          tipoPesso: 'F',
+      const xmlOrder = jsontoxml(
+        {
+          pedido: [
+            {
+              name: 'cliente',
+              children: [
+                {
+                  name: 'nome',
+                  text: opportunity.org_id.name || 'svribeiroORG',
+                },
+                {
+                  name: 'cpf_cnpj',
+                  text: generate(),
+                },
+              ],
+            },
+            {
+              name: 'itens',
+              children: [
+                {
+                  name: 'item',
+                  children: [
+                    { name: 'codigo', text: 1 },
+                    { name: 'descricao', text: 'deal' },
+                    { name: 'qtde', text: 1 },
+                    { name: 'vlr_unit', text: opportunity.value || 0 },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'parcelas',
+              children: [
+                {
+                  name: 'parcela',
+                  children: [{ name: 'vlr', text: opportunity.value || 0 }],
+                },
+              ],
+            },
+          ],
         },
-        itens: [
-          {
-            item: {
-              descricao: 'teste item',
-              qtde: '1',
-              vlr_unit: opportunity.value,
-            },
-          },
-        ],
-        parcelas: [
-          {
-            parcela: {
-              vlr: opportunity.value,
-            },
-          },
-        ],
-      };
-
-      const orderStore = await bling.post(
-        `/pedido/json/&apikey=${process.env.BLING_TOKEN}&xml=${js2xmlparser.parse(xmlJson, 'pedido')}`,
+        false
       );
 
-      const { pedido } = orderStore.data.retorno.pedidos[0];
+      const apikey = process.env.BLING_TOKEN;
 
-      console.log(pedido);
+      try {
+        const orderStore = await bling.post(
+          `/pedido/json/&apikey=${apikey}&xml=${xmlOrder}`
+        );
 
-      pedido.value = deal.value;
-      pedido.orgName = deal.org_id.name;
+        const { pedido } = orderStore.data.retorno.pedidos[0];
 
-      return pedido;
+        pedido.value = deal.value;
+        pedido.orgName = deal.org_id.name;
+
+        return pedido;
+      } catch (error) {
+        return error.message;
+      }
     });
 
     const Orders = Promise.all(opportunitiesStore).then((response) => {

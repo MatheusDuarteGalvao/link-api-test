@@ -15,8 +15,6 @@ module.exports = {
 
       const { data } = deals.data;
 
-      console.log(data);
-
       const orders = await storeOrderService.store(data);
 
       await opportunityRepository.storeOpportunity(orders);
@@ -25,7 +23,7 @@ module.exports = {
 
       return response.status(200).json(groupOrders);
     } catch (error) {
-      throw new Error(error.message);
+      return error.message;
     }
   },
 };
